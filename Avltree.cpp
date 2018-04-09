@@ -27,15 +27,25 @@ int height (Node *node) {
 }
 
 int Balance(Node *node) {
-    if (node === NULL) {
+    if (node == NULL) {
         return 0;
     }
     return height(node->right) - height(node->left);
 }
 
-Node *lerftRotation(Node *node) {
+Node *rightRotation(Node *node) {
+    Node *x = node->left;
+    Node *T2 = x->right;
+    x->right = node;
+    node->left = T2;
+    x->height = 1 + max(height(x->left), height(x->right));
+    node->height = 1 + max(height(node->left), height(node->right));
+    return x;
+}
+
+Node *leftRotation(Node *node) {
     Node *x = node->right;
-    Node T2 = x->left;
+    Node *T2 = x->left;
     x->left = node;
     node->right = T2;
     x->height = 1 + max(height(x->left), height(x->right));
@@ -45,11 +55,11 @@ Node *lerftRotation(Node *node) {
 
 Node *insert(Node *node, int key) {
     if (node == NULL) {
-        node =  new Node(key);
+        return new Node(key);
     } else if (key > node-> key) {
-        return insert(node->right, key);
+        node->right =  insert(node->right, key);
     } else if (key < node->key) {
-        return insert(node->left, key);
+        node->left =  insert(node->left, key);
     } else {
         return node;
     }
@@ -57,12 +67,38 @@ Node *insert(Node *node, int key) {
     int balance = Balance(node);
     //left left case
     if (balance < -1 && key < node->left->key) {
-        return 
+        return rightRotation(node);
+    } //left right case  || double left
+    if (balance < -1 && key > node->left->key) {
+         node->left = leftRotation(node->left);
+         return rightRotation(node);
+    } // right right case
+    if (balance > 1 && key > node->right->key) {
+        return leftRotation(node);
+    } // right left case || double right
+    if (balance > 1 && key < node->right->key) {
+        node->right =rightRotation(node->right);
+        return leftRotation(node); 
+    }
+    return node;
+}
+
+void preorder(Node *node) {
+    if(node != NULL) {
+        cout << node->key << endl;
+        preorder(node->left);
+        preorder(node->right);
     }
 }
 
 int main () {
-    int x = 20, y = 100;
-    cout << max(x, y) << endl;
+    Node *node = NULL;
+    node = insert(node, 10);
+    node = insert(node, 20);
+    node = insert(node, 30);
+    node = insert(node, 40);
+    node = insert(node, 50);
+    node = insert(node, 25);
+    preorder(node);
     return 0;
 }
