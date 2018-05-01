@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 /*struct Graph {
     int V;
     list<int> *adj;
@@ -20,6 +19,8 @@ void add_graph (int V, int w, list<int> *graph) {
 
 void BFS (int S, list<int> *graph, int V) {
     bool visited [V];
+    int pre[V];
+    //pre[S] = 0; //distância mínima
     for (int i = 0; i < V; i ++) {
         visited[i] = false;
     }
@@ -34,11 +35,15 @@ void BFS (int S, list<int> *graph, int V) {
         for (i = graph[S].begin(); i != graph[S].end(); i ++) {
             if (!visited[*i]) {
                 queue.push_back(*i);
+                //pre[*i] = pre[S] + 1; //Dist. Min
                 visited[*i] = true;
             }
         }
-
     }
+    /*cout << "\n"; //distância mínima
+    for (int i = 0; i < V; i ++) {
+        cout << pre[i] << endl;
+    } */
 } 
 
 int main () {
