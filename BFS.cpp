@@ -40,10 +40,7 @@ void BFS (int S, list<int> *graph, int V) {
             }
         }
     }
-    /*cout << "\n"; //distância mínima
-    for (int i = 0; i < V; i ++) {
-        cout << pre[i] << endl;
-    } */
+ 
 } 
 
 int main () {
